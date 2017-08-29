@@ -6,10 +6,8 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.junit.Assert;
@@ -31,10 +29,10 @@ public class ItemRepositoryTest_Part1_Fetching {
     }
 
     @Mock
-    Api api;
+    private Api api;
 
     @Mock
-    ApiErrorConverter apiErrorConverter;
+    private ApiErrorConverter apiErrorConverter;
 
     private ItemRepositoryImpl itemRepository;
 

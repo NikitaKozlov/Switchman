@@ -36,10 +36,10 @@ public class ItemRepositoryTest_Part2_AddingAndRemoving {
     }
 
     @Mock
-    Api api;
+    private Api api;
 
     @Mock
-    ApiErrorConverter apiErrorConverter;
+    private ApiErrorConverter apiErrorConverter;
 
     private ItemRepositoryImpl itemRepository;
 
@@ -93,7 +93,7 @@ public class ItemRepositoryTest_Part2_AddingAndRemoving {
         RxJavaSchedulerUtils.advanceOneSecond();
 
         subscriber.assertResult(Response.createFailedResponse(cause))
-                  .assertCompleted();
+                .assertCompleted();
         assertFalse(itemRepository.hasItem(itemId));
     }
 
@@ -125,7 +125,7 @@ public class ItemRepositoryTest_Part2_AddingAndRemoving {
         RxJavaSchedulerUtils.advanceOneSecond();
 
         subscriber.assertResult(Response.createFailedResponse(cause))
-                  .assertCompleted();
+                .assertCompleted();
         assertFalse(itemRepository.hasItem(itemId));
     }
 
@@ -157,7 +157,7 @@ public class ItemRepositoryTest_Part2_AddingAndRemoving {
         RxJavaSchedulerUtils.advanceOneSecond();
 
         subscriber.assertReceivedOnNext(Collections.singletonList(Response.createSuccessfulResponse()))
-                  .assertCompleted();
+                .assertCompleted();
         assertFalse(itemRepository.hasItem(itemId));
     }
 
@@ -209,14 +209,14 @@ public class ItemRepositoryTest_Part2_AddingAndRemoving {
         RxJavaSchedulerUtils.advanceOneSecond();
 
         subscriber.assertResult(Response.createFailedResponse(cause))
-                  .assertCompleted();
+                .assertCompleted();
         assertTrue(itemRepository.hasItem(itemId));
     }
 
     /**
      * Helper method for adding a single item.
      *
-     * @return  ItemId of the added item
+     * @return ItemId of the added item
      */
     private ItemId addNewItemSuccessfully() {
         ItemId itemId = mock(ItemId.class);
@@ -227,7 +227,7 @@ public class ItemRepositoryTest_Part2_AddingAndRemoving {
     /**
      * Helper method for adding a given item.
      *
-     * @param  itemId  id of the item to add
+     * @param itemId id of the item to add
      */
     private void addItemSuccessfully(final ItemId itemId) {
         when(api.addItem(itemId)).thenReturn(Single.just(ApiResponse.createSuccessfulResponse()));

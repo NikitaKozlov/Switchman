@@ -28,10 +28,10 @@ public class ItemRepositoryTest_Part3_CounterChanges {
     }
 
     @Mock
-    Api api;
+    private Api api;
 
     @Mock
-    ApiErrorConverter apiErrorConverter;
+    private ApiErrorConverter apiErrorConverter;
 
     private ItemRepositoryImpl itemRepository;
 

@@ -29,10 +29,10 @@ public class ItemRepositoryTest_Part4_ApiCallsOptimisation {
     }
 
     @Mock
-    Api api;
+    private Api api;
 
     @Mock
-    ApiErrorConverter apiErrorConverter;
+    private ApiErrorConverter apiErrorConverter;
 
     private ItemRepositoryImpl itemRepository;
 
