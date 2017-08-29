@@ -1,0 +1,1 @@
+If you have discovered a security vulnerability, please email one of the [maintainers](MAINTAINERS).
