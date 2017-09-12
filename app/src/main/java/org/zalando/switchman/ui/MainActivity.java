@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         subscription.add(searchDataSource.search()
                 .subscribe(recipes -> recyclerView.setAdapter(
-                        new RecipeAdapter(recipes, getRecommendationStateChecker(), getRecommendationListener())))) ;
+                        new RecipeAdapter(recipes, getRecommendationStateChecker(), getRecommendationListener()))));
     }
 
     @Override
@@ -62,21 +62,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void recommend(ItemId itemId, RecommendationView.RequestListener requestListener) {
                 subscription.add(recommendationDataSource.addItem(itemId)
-                        .observeOn(AndroidSchedulers.mainThread()).subscribe(
-                        response -> onRecommendationRequestSuccess(response, requestListener,
-                                "Due to an error request to start recommending is failed"),
-                        throwable -> onRecommendationRequestFail(requestListener, throwable.getMessage())
-                ));
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                response -> onRecommendationRequestSuccess(response, requestListener,
+                                        "Due to an error request to start recommending is failed"),
+                                throwable -> onRecommendationRequestFail(requestListener, throwable.getMessage())
+                        ));
             }
 
             @Override
             public void unrecommend(ItemId itemId, RecommendationView.RequestListener requestListener) {
                 subscription.add(recommendationDataSource.removeItem(itemId)
-                        .observeOn(AndroidSchedulers.mainThread()).subscribe(
-                        response -> onRecommendationRequestSuccess(response, requestListener,
-                                "Due to an error request to stop recommending is failed"),
-                        throwable -> onRecommendationRequestFail(requestListener, throwable.getMessage())
-                ));
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                response -> onRecommendationRequestSuccess(response, requestListener,
+                                        "Due to an error request to stop recommending is failed"),
+                                throwable -> onRecommendationRequestFail(requestListener, throwable.getMessage())
+                        ));
             }
         };
     }
