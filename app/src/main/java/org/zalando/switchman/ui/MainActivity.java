@@ -41,9 +41,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        searchDataSource.search()
+        subscription.add(searchDataSource.search()
                 .subscribe(recipes -> recyclerView.setAdapter(
-                        new RecipeAdapter(recipes, getRecommendationStateChecker(), getRecommendationListener())));
+                        new RecipeAdapter(recipes, getRecommendationStateChecker(), getRecommendationListener())))) ;
     }
 
     @Override
