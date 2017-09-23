@@ -40,4 +40,9 @@ public class Presenter {
         setRecommendationDataSource(Injector.createRecommendationDataSource());
         setSearchDataSource(Injector.createSearchDataSource());
     }
+
+    void search(MainActivity mainActivity) {
+        getSubscription().add(getSearchDataSource().search()
+                .subscribe(recipes -> mainActivity.displayRecipes(recipes, mainActivity.getRecommendationStateChecker(), mainActivity.getRecommendationListener())));
+    }
 }

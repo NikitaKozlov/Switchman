@@ -36,11 +36,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        presenter.getSubscription().add(presenter.getSearchDataSource().search()
-                .subscribe(recipes -> displayRecipes(recipes, getRecommendationStateChecker(), getRecommendationListener())));
+        presenter.search(this);
     }
 
-    private void displayRecipes(List<Recipe> recipes, RecommendationStateChecker recommendationStateChecker, RecommendationView.RecommendationListener recommendationListener) {
+    void displayRecipes(List<Recipe> recipes, RecommendationStateChecker recommendationStateChecker, RecommendationView.RecommendationListener recommendationListener) {
         recyclerView.setAdapter(
                 new RecipeAdapter(recipes, recommendationStateChecker, recommendationListener));
     }
@@ -51,11 +50,11 @@ public class MainActivity extends AppCompatActivity {
         presenter.getSubscription().clear();
     }
 
-    private RecommendationStateChecker getRecommendationStateChecker() {
+    RecommendationStateChecker getRecommendationStateChecker() {
         return new RecommendationStateChecker(presenter.getRecommendationDataSource());
     }
 
-    private RecommendationView.RecommendationListener getRecommendationListener() {
+    RecommendationView.RecommendationListener getRecommendationListener() {
         return new RecommendationView.RecommendationListener() {
 
             @Override
