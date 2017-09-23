@@ -46,12 +46,7 @@ public class MainActivity extends AppCompatActivity {
         presenter.getSubscription().clear();
     }
 
-    void onRecommendationRequestFail(RecommendationView.RequestListener requestListener, String message) {
-        requestListener.onFail();
-        showNotification(message);
-    }
-
-    private void showNotification(String message) {
+    void showNotification(String message) {
         Toast.makeText(this, message, LENGTH_SHORT).show();
     }
 }

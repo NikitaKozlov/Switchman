@@ -63,7 +63,7 @@ public class Presenter {
                         .subscribe(
                                 response -> mainActivity.presenter.onRecommendationRequestSuccess(response, requestListener,
                                         "Due to an error request to start recommending is failed", mainActivity),
-                                throwable -> mainActivity.onRecommendationRequestFail(requestListener, throwable.getMessage())
+                                throwable -> mainActivity.presenter.onRecommendationRequestFail(requestListener, throwable.getMessage(), mainActivity)
                         ));
             }
 
@@ -74,7 +74,7 @@ public class Presenter {
                         .subscribe(
                                 response -> mainActivity.presenter.onRecommendationRequestSuccess(response, requestListener,
                                         "Due to an error request to stop recommending is failed", mainActivity),
-                                throwable -> mainActivity.onRecommendationRequestFail(requestListener, throwable.getMessage())
+                                throwable -> mainActivity.presenter.onRecommendationRequestFail(requestListener, throwable.getMessage(), mainActivity)
                         ));
             }
         };
@@ -86,7 +86,12 @@ public class Presenter {
         if (response.isSuccessful()) {
             requestListener.onSuccess();
         } else if (!response.isSkipped()) {
-            mainActivity.onRecommendationRequestFail(requestListener, errorNotification);
+            mainActivity.presenter.onRecommendationRequestFail(requestListener, errorNotification, mainActivity);
         }
+    }
+
+    void onRecommendationRequestFail(RecommendationView.RequestListener requestListener, String message, MainActivity mainActivity) {
+        requestListener.onFail();
+        mainActivity.showNotification(message);
     }
 }
