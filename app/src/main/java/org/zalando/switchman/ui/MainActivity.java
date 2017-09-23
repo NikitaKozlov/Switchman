@@ -8,7 +8,6 @@ import android.widget.Toast;
 
 import org.zalando.switchman.R;
 import org.zalando.switchman.Recipe;
-import org.zalando.switchman.repo.Response;
 
 import java.util.List;
 
@@ -50,16 +49,6 @@ public class MainActivity extends AppCompatActivity {
     void onRecommendationRequestFail(RecommendationView.RequestListener requestListener, String message) {
         requestListener.onFail();
         showNotification(message);
-    }
-
-    void onRecommendationRequestSuccess(Response response,
-                                        RecommendationView.RequestListener requestListener,
-                                        String errorNotification) {
-        if (response.isSuccessful()) {
-            requestListener.onSuccess();
-        } else if (!response.isSkipped()) {
-            onRecommendationRequestFail(requestListener, errorNotification);
-        }
     }
 
     private void showNotification(String message) {

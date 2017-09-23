@@ -4,6 +4,7 @@ import org.zalando.switchman.Injector;
 import org.zalando.switchman.ItemId;
 import org.zalando.switchman.data.RecommendationDataSource;
 import org.zalando.switchman.data.SearchDataSource;
+import org.zalando.switchman.repo.Response;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
@@ -60,8 +61,8 @@ public class Presenter {
                 getSubscription().add(getRecommendationDataSource().addItem(itemId)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
-                                response -> mainActivity.onRecommendationRequestSuccess(response, requestListener,
-                                        "Due to an error request to start recommending is failed"),
+                                response -> mainActivity.presenter.onRecommendationRequestSuccess(response, requestListener,
+                                        "Due to an error request to start recommending is failed", mainActivity),
                                 throwable -> mainActivity.onRecommendationRequestFail(requestListener, throwable.getMessage())
                         ));
             }
@@ -71,11 +72,21 @@ public class Presenter {
                 getSubscription().add(getRecommendationDataSource().removeItem(itemId)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
-                                response -> mainActivity.onRecommendationRequestSuccess(response, requestListener,
-                                        "Due to an error request to stop recommending is failed"),
+                                response -> mainActivity.presenter.onRecommendationRequestSuccess(response, requestListener,
+                                        "Due to an error request to stop recommending is failed", mainActivity),
                                 throwable -> mainActivity.onRecommendationRequestFail(requestListener, throwable.getMessage())
                         ));
             }
         };
+    }
+
+    void onRecommendationRequestSuccess(Response response,
+                                        RecommendationView.RequestListener requestListener,
+                                        String errorNotification, MainActivity mainActivity) {
+        if (response.isSuccessful()) {
+            requestListener.onSuccess();
+        } else if (!response.isSkipped()) {
+            mainActivity.onRecommendationRequestFail(requestListener, errorNotification);
+        }
     }
 }
