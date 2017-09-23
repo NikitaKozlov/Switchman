@@ -9,22 +9,16 @@ import android.widget.Toast;
 import org.zalando.switchman.Injector;
 import org.zalando.switchman.ItemId;
 import org.zalando.switchman.R;
-import org.zalando.switchman.data.RecommendationDataSource;
-import org.zalando.switchman.data.SearchDataSource;
 import org.zalando.switchman.repo.Response;
 
 import rx.android.schedulers.AndroidSchedulers;
-import rx.subscriptions.CompositeSubscription;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecommendationDataSource recommendationDataSource;
-    private SearchDataSource searchDataSource;
+    private final Presenter presenter = new Presenter();
     private RecyclerView recyclerView;
-
-    private CompositeSubscription subscription = new CompositeSubscription();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,14 +28,14 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false));
 
-        recommendationDataSource = Injector.createRecommendationDataSource();
-        searchDataSource = Injector.createSearchDataSource();
+        presenter.setRecommendationDataSource(Injector.createRecommendationDataSource());
+        presenter.setSearchDataSource(Injector.createSearchDataSource());
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        subscription.add(searchDataSource.search()
+        presenter.getSubscription().add(presenter.getSearchDataSource().search()
                 .subscribe(recipes -> recyclerView.setAdapter(
                         new RecipeAdapter(recipes, getRecommendationStateChecker(), getRecommendationListener()))));
     }
@@ -49,11 +43,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        subscription.clear();
+        presenter.getSubscription().clear();
     }
 
     private RecommendationStateChecker getRecommendationStateChecker() {
-        return new RecommendationStateChecker(recommendationDataSource);
+        return new RecommendationStateChecker(presenter.getRecommendationDataSource());
     }
 
     private RecommendationView.RecommendationListener getRecommendationListener() {
@@ -61,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void recommend(ItemId itemId, RecommendationView.RequestListener requestListener) {
-                subscription.add(recommendationDataSource.addItem(itemId)
+                presenter.getSubscription().add(presenter.getRecommendationDataSource().addItem(itemId)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 response -> onRecommendationRequestSuccess(response, requestListener,
@@ -72,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void unrecommend(ItemId itemId, RecommendationView.RequestListener requestListener) {
-                subscription.add(recommendationDataSource.removeItem(itemId)
+                presenter.getSubscription().add(presenter.getRecommendationDataSource().removeItem(itemId)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 response -> onRecommendationRequestSuccess(response, requestListener,
