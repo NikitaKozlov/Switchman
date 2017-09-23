@@ -8,7 +8,10 @@ import android.widget.Toast;
 
 import org.zalando.switchman.ItemId;
 import org.zalando.switchman.R;
+import org.zalando.switchman.Recipe;
 import org.zalando.switchman.repo.Response;
+
+import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -34,8 +37,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         presenter.getSubscription().add(presenter.getSearchDataSource().search()
-                .subscribe(recipes -> recyclerView.setAdapter(
-                        new RecipeAdapter(recipes, getRecommendationStateChecker(), getRecommendationListener()))));
+                .subscribe(recipes -> displayRecipes(recipes)));
+    }
+
+    private void displayRecipes(List<Recipe> recipes) {
+        recyclerView.setAdapter(
+                new RecipeAdapter(recipes, getRecommendationStateChecker(), getRecommendationListener()));
     }
 
     @Override
