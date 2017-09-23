@@ -1,5 +1,6 @@
 package org.zalando.switchman.ui;
 
+import org.zalando.switchman.Injector;
 import org.zalando.switchman.data.RecommendationDataSource;
 import org.zalando.switchman.data.SearchDataSource;
 
@@ -33,5 +34,10 @@ public class Presenter {
     }
 
     public Presenter() {
+    }
+
+    void inject() {
+        setRecommendationDataSource(Injector.createRecommendationDataSource());
+        setSearchDataSource(Injector.createSearchDataSource());
     }
 }

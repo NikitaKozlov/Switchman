@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
-import org.zalando.switchman.Injector;
 import org.zalando.switchman.ItemId;
 import org.zalando.switchman.R;
 import org.zalando.switchman.repo.Response;
@@ -28,12 +27,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false));
 
-        inject();
-    }
-
-    private void inject() {
-        presenter.setRecommendationDataSource(Injector.createRecommendationDataSource());
-        presenter.setSearchDataSource(Injector.createSearchDataSource());
+        presenter.inject();
     }
 
     @Override
