@@ -19,7 +19,7 @@ import static android.widget.Toast.LENGTH_SHORT;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final Presenter presenter = new Presenter();
+    final Presenter presenter = new Presenter();
     private RecyclerView recyclerView;
 
     @Override
@@ -48,10 +48,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         presenter.getSubscription().clear();
-    }
-
-    RecommendationStateChecker getRecommendationStateChecker() {
-        return new RecommendationStateChecker(presenter.getRecommendationDataSource());
     }
 
     RecommendationView.RecommendationListener getRecommendationListener() {

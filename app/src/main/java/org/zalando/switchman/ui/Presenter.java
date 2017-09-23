@@ -43,6 +43,10 @@ public class Presenter {
 
     void search(MainActivity mainActivity) {
         getSubscription().add(getSearchDataSource().search()
-                .subscribe(recipes -> mainActivity.displayRecipes(recipes, mainActivity.getRecommendationStateChecker(), mainActivity.getRecommendationListener())));
+                .subscribe(recipes -> mainActivity.displayRecipes(recipes, mainActivity.presenter.getRecommendationStateChecker(), mainActivity.getRecommendationListener())));
+    }
+
+    RecommendationStateChecker getRecommendationStateChecker() {
+        return new RecommendationStateChecker(getRecommendationDataSource());
     }
 }
