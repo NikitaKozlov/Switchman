@@ -28,6 +28,10 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false));
 
+        inject();
+    }
+
+    private void inject() {
         presenter.setRecommendationDataSource(Injector.createRecommendationDataSource());
         presenter.setSearchDataSource(Injector.createSearchDataSource());
     }
