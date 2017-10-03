@@ -11,6 +11,7 @@ import rx.subscriptions.CompositeSubscription;
 
 public class Presenter {
     private RecommendationDataSource recommendationDataSource;
+    private MainActivity mainActivity;
 
     public RecommendationDataSource getRecommendationDataSource() {
         return recommendationDataSource;
@@ -96,6 +97,7 @@ public class Presenter {
     }
 
     void onViewAttached(MainActivity mainActivity) {
-        search(mainActivity);
+        this.mainActivity = mainActivity;
+        search(this.mainActivity);
     }
 }
