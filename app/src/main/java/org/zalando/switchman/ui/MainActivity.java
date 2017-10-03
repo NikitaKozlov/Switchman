@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         presenter.onViewAttached(this);
     }
 
-    void displayRecipes(List<Recipe> recipes, RecommendationStateChecker recommendationStateChecker, RecommendationView.RecommendationListener recommendationListener) {
+    public void displayRecipes(List<Recipe> recipes, RecommendationStateChecker recommendationStateChecker, RecommendationView.RecommendationListener recommendationListener) {
         recyclerView.setAdapter(
                 new RecipeAdapter(recipes, recommendationStateChecker, recommendationListener));
     }
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         presenter.onViewDetached();
     }
 
-    void showNotification(String message) {
+    public void showNotification(String message) {
         Toast.makeText(this, message, LENGTH_SHORT).show();
     }
 }
