@@ -94,4 +94,8 @@ public class Presenter {
         requestListener.onFail();
         mainActivity.showNotification(message);
     }
+
+    void onViewAttached(MainActivity mainActivity) {
+        search(mainActivity);
+    }
 }
