@@ -13,45 +13,25 @@ public class Presenter {
     private RecommendationDataSource recommendationDataSource;
     private MainView mainView;
 
-    public RecommendationDataSource getRecommendationDataSource() {
-        return recommendationDataSource;
-    }
-
-    public void setRecommendationDataSource(RecommendationDataSource recommendationDataSource) {
-        this.recommendationDataSource = recommendationDataSource;
-    }
-
     private SearchDataSource searchDataSource;
 
-    public SearchDataSource getSearchDataSource() {
-        return searchDataSource;
-    }
-
-    public void setSearchDataSource(SearchDataSource searchDataSource) {
-        this.searchDataSource = searchDataSource;
-    }
-
     private CompositeSubscription subscription = new CompositeSubscription();
-
-    public CompositeSubscription getSubscription() {
-        return subscription;
-    }
 
     public Presenter() {
     }
 
     void inject() {
-        setRecommendationDataSource(Injector.createRecommendationDataSource());
-        setSearchDataSource(Injector.createSearchDataSource());
+        this.recommendationDataSource = Injector.createRecommendationDataSource();
+        this.searchDataSource = Injector.createSearchDataSource();
     }
 
     void search() {
-        getSubscription().add(getSearchDataSource().search()
+        subscription.add(searchDataSource.search()
                 .subscribe(recipes -> mainView.displayRecipes(recipes, getRecommendationStateChecker(), getRecommendationListener())));
     }
 
     RecommendationStateChecker getRecommendationStateChecker() {
-        return new RecommendationStateChecker(getRecommendationDataSource());
+        return new RecommendationStateChecker(recommendationDataSource);
     }
 
     RecommendationView.RecommendationListener getRecommendationListener() {
@@ -59,7 +39,7 @@ public class Presenter {
 
             @Override
             public void recommend(ItemId itemId, RecommendationView.RequestListener requestListener) {
-                getSubscription().add(getRecommendationDataSource().addItem(itemId)
+                subscription.add(recommendationDataSource.addItem(itemId)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 response -> onRecommendationRequestSuccess(response, requestListener,
@@ -70,7 +50,7 @@ public class Presenter {
 
             @Override
             public void unrecommend(ItemId itemId, RecommendationView.RequestListener requestListener) {
-                getSubscription().add(getRecommendationDataSource().removeItem(itemId)
+                subscription.add(recommendationDataSource.removeItem(itemId)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 response -> onRecommendationRequestSuccess(response, requestListener,
@@ -103,6 +83,6 @@ public class Presenter {
 
     void onViewDetached() {
         this.mainView = null;
-        getSubscription().clear();
+        subscription.clear();
     }
 }
