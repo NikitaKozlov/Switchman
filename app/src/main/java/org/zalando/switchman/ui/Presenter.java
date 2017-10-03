@@ -102,6 +102,7 @@ public class Presenter {
     }
 
     void onViewDetached() {
+        this.mainActivity = null;
         getSubscription().clear();
     }
 }
