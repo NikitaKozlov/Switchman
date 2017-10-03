@@ -11,7 +11,7 @@ import rx.subscriptions.CompositeSubscription;
 
 public class Presenter {
     private RecommendationDataSource recommendationDataSource;
-    private MainActivity mainActivity;
+    private MainView mainView;
 
     public RecommendationDataSource getRecommendationDataSource() {
         return recommendationDataSource;
@@ -47,7 +47,7 @@ public class Presenter {
 
     void search() {
         getSubscription().add(getSearchDataSource().search()
-                .subscribe(recipes -> mainActivity.displayRecipes(recipes, getRecommendationStateChecker(), getRecommendationListener())));
+                .subscribe(recipes -> mainView.displayRecipes(recipes, getRecommendationStateChecker(), getRecommendationListener())));
     }
 
     RecommendationStateChecker getRecommendationStateChecker() {
@@ -93,16 +93,16 @@ public class Presenter {
 
     void onRecommendationRequestFail(RecommendationView.RequestListener requestListener, String message) {
         requestListener.onFail();
-        mainActivity.showNotification(message);
+        mainView.showNotification(message);
     }
 
-    void onViewAttached(MainActivity mainActivity) {
-        this.mainActivity = mainActivity;
+    void onViewAttached(MainView mainView) {
+        this.mainView = mainView;
         search();
     }
 
     void onViewDetached() {
-        this.mainActivity = null;
+        this.mainView = null;
         getSubscription().clear();
     }
 }

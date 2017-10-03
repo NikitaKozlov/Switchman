@@ -13,7 +13,7 @@ import java.util.List;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainView {
 
     final Presenter presenter = new Presenter();
     private RecyclerView recyclerView;
@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         presenter.onViewAttached(this);
     }
 
+    @Override
     public void displayRecipes(List<Recipe> recipes, RecommendationStateChecker recommendationStateChecker, RecommendationView.RecommendationListener recommendationListener) {
         recyclerView.setAdapter(
                 new RecipeAdapter(recipes, recommendationStateChecker, recommendationListener));
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         presenter.onViewDetached();
     }
 
+    @Override
     public void showNotification(String message) {
         Toast.makeText(this, message, LENGTH_SHORT).show();
     }
