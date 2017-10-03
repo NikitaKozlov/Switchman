@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        presenter.getSubscription().clear();
+        presenter.onViewDetached();
     }
 
     void showNotification(String message) {

@@ -100,4 +100,8 @@ public class Presenter {
         this.mainActivity = mainActivity;
         search(this.mainActivity);
     }
+
+    void onViewDetached() {
+        getSubscription().clear();
+    }
 }
