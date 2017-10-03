@@ -5,9 +5,11 @@ impacts on the business, that most likely means increased usage of network and b
 ours and users' interests to optimize amount of network calls.
 
 This repo contains an example of optimizing API calls using RxJava. Along with an example there is 
-a challenge exercise. Before reading the solution you can try to solve the problem on your own 
-against tests. There are 28 tests to verify that your solution works! Please check the "Challenge" 
+an optional challenge exercise. Before reading the solution you can try to solve the problem on your own 
+against tests. There are 29 tests to verify that your solution works! Please check the "Challenge" 
 section below for more details.
+
+You can find full article about it [here](https://medium.freecodecamp.org/want-to-optimize-network-usage-check-out-local-storage-and-rxjava-backpressure-8b91b1db298a).
 
 # Problem
 The task is to develop a feature that allows the user to add items to and remove  from a certain list. 
