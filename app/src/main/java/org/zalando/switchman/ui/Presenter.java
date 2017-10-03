@@ -45,16 +45,16 @@ public class Presenter {
         setSearchDataSource(Injector.createSearchDataSource());
     }
 
-    void search(MainActivity mainActivity) {
+    void search() {
         getSubscription().add(getSearchDataSource().search()
-                .subscribe(recipes -> mainActivity.displayRecipes(recipes, mainActivity.presenter.getRecommendationStateChecker(), mainActivity.presenter.getRecommendationListener(mainActivity))));
+                .subscribe(recipes -> mainActivity.displayRecipes(recipes, getRecommendationStateChecker(), getRecommendationListener())));
     }
 
     RecommendationStateChecker getRecommendationStateChecker() {
         return new RecommendationStateChecker(getRecommendationDataSource());
     }
 
-    RecommendationView.RecommendationListener getRecommendationListener(MainActivity mainActivity) {
+    RecommendationView.RecommendationListener getRecommendationListener() {
         return new RecommendationView.RecommendationListener() {
 
             @Override
@@ -62,9 +62,9 @@ public class Presenter {
                 getSubscription().add(getRecommendationDataSource().addItem(itemId)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
-                                response -> mainActivity.presenter.onRecommendationRequestSuccess(response, requestListener,
-                                        "Due to an error request to start recommending is failed", mainActivity),
-                                throwable -> mainActivity.presenter.onRecommendationRequestFail(requestListener, throwable.getMessage(), mainActivity)
+                                response -> onRecommendationRequestSuccess(response, requestListener,
+                                        "Due to an error request to start recommending is failed"),
+                                throwable -> onRecommendationRequestFail(requestListener, throwable.getMessage())
                         ));
             }
 
@@ -73,9 +73,9 @@ public class Presenter {
                 getSubscription().add(getRecommendationDataSource().removeItem(itemId)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
-                                response -> mainActivity.presenter.onRecommendationRequestSuccess(response, requestListener,
-                                        "Due to an error request to stop recommending is failed", mainActivity),
-                                throwable -> mainActivity.presenter.onRecommendationRequestFail(requestListener, throwable.getMessage(), mainActivity)
+                                response -> onRecommendationRequestSuccess(response, requestListener,
+                                        "Due to an error request to stop recommending is failed"),
+                                throwable -> onRecommendationRequestFail(requestListener, throwable.getMessage())
                         ));
             }
         };
@@ -83,22 +83,22 @@ public class Presenter {
 
     void onRecommendationRequestSuccess(Response response,
                                         RecommendationView.RequestListener requestListener,
-                                        String errorNotification, MainActivity mainActivity) {
+                                        String errorNotification) {
         if (response.isSuccessful()) {
             requestListener.onSuccess();
         } else if (!response.isSkipped()) {
-            mainActivity.presenter.onRecommendationRequestFail(requestListener, errorNotification, mainActivity);
+            onRecommendationRequestFail(requestListener, errorNotification);
         }
     }
 
-    void onRecommendationRequestFail(RecommendationView.RequestListener requestListener, String message, MainActivity mainActivity) {
+    void onRecommendationRequestFail(RecommendationView.RequestListener requestListener, String message) {
         requestListener.onFail();
         mainActivity.showNotification(message);
     }
 
     void onViewAttached(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
-        search(this.mainActivity);
+        search();
     }
 
     void onViewDetached() {
